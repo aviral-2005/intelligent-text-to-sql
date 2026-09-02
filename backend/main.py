@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from backend.database import test_connection
 from backend.llm import generate_sql, generate_sql_from_clarification
 from backend.schema import get_database_schema
@@ -43,74 +43,115 @@ def database_schema():
 @app.post("/query")
 def query_database(request: QueryRequest):
 
-    # First turn: user asks a new question
-    if request.question:
+    try:
+        # First turn: user asks a new question
+        if request.question:
 
-        response = generate_sql(request.question)
+            response = generate_sql(request.question)
 
-        # LLM needs clarification
-        if response.status == "clarification_needed":
+            if response.status == "clarification_needed":
 
-            save_conversation(
-                request.conversation_id,
-                request.question,
-                response.clarification_question,
-            )
+                if not response.clarification_question:
+                    return {
+                        "status": "error",
+                        "message": "LLM requested clarification but did not provide a question."
+                    }
 
-            return {
-                "status": "clarification_needed",
-                "clarification_question": response.clarification_question,
-            }
+                save_conversation(
+                    request.conversation_id,
+                    request.question,
+                    response.clarification_question
+                )
 
-        # LLM generated SQL directly
-        is_valid, message = validate_sql(response.sql)
+                return {
+                    "status": "clarification_needed",
+                    "clarification_question": response.clarification_question
+                }
 
-        if not is_valid:
-            return {"status": "error", "message": message}
+            # LLM says the query is ready
+            if not response.sql:
+                return {
+                    "status": "error",
+                    "message": "LLM returned ready status without SQL."
+                }
 
-        result = execute_sql(response.sql)
+            is_valid, message = validate_sql(response.sql)
 
-        return {"status": "ready", "sql": response.sql, "result": result}
+            if not is_valid:
+                return {
+                    "status": "error",
+                    "message": message
+                }
 
-    # Second turn: user provides clarification
-    if request.clarification_answer:
-
-        conversation = get_conversation(request.conversation_id)
-
-        if not conversation:
-            return {"status": "error", "message": "Conversation not found."}
-
-        response = generate_sql_from_clarification(
-            conversation.original_question, request.clarification_answer
-        )
-
-        # Still ambiguous
-        if response.status == "clarification_needed":
-
-            update_clarification(
-                request.conversation_id,
-                response.clarification_question
-            )
+            result = execute_sql(response.sql)
 
             return {
-                "status": "clarification_needed",
-                "clarification_question": response.clarification_question,
+                "status": "ready",
+                "sql": response.sql,
+                "result": result
             }
 
-        # Clarification resolved the question
-        is_valid, message = validate_sql(response.sql)
+        # Second turn: user provides clarification
+        if request.clarification_answer:
 
-        if not is_valid:
-            return {"status": "error", "message": message}
+            conversation = get_conversation(request.conversation_id)
 
-        result = execute_sql(response.sql)
+            if not conversation:
+                return {
+                    "status": "error",
+                    "message": "Conversation not found."
+                }
 
-        # Conversation is finished
-        delete_conversation(request.conversation_id)
+            response = generate_sql_from_clarification(
+                conversation.original_question,
+                request.clarification_answer
+            )
 
-        return {"status": "ready", "sql": response.sql, "result": result}
+            if response.status == "clarification_needed":
 
-    return {
-        "status": "error",
-        "message": "Provide either a question or clarification answer.",
-    }
+                if not response.clarification_question:
+                    return {
+                        "status": "error",
+                        "message": "LLM requested clarification but did not provide a question."
+                    }
+
+                update_clarification(
+                    request.conversation_id,
+                    response.clarification_question
+                )
+
+                return {
+                    "status": "clarification_needed",
+                    "clarification_question": response.clarification_question
+                }
+
+            # Clarification resolved
+            if not response.sql:
+                return {
+                    "status": "error",
+                    "message": "LLM returned ready status without SQL."
+                }
+
+            is_valid, message = validate_sql(response.sql)
+
+            if not is_valid:
+                return {
+                    "status": "error",
+                    "message": message
+                }
+
+            result = execute_sql(response.sql)
+
+            delete_conversation(request.conversation_id)
+
+            return {
+                "status": "ready",
+                "sql": response.sql,
+                "result": result
+            }
+
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": "An unexpected error occurred while processing the query."
+        }
