@@ -11,6 +11,7 @@ from backend.conversation import (
     update_clarification,
     delete_conversation,
 )
+from backend.ambiguity import detect_ambiguity
 
 app = FastAPI()
 
@@ -47,6 +48,29 @@ def query_database(request: QueryRequest):
         # First turn: user asks a new question
         if request.question:
 
+            # Step 1: Detect ambiguity before generating SQL
+            ambiguity = detect_ambiguity(request.question)
+
+            if ambiguity.is_ambiguous:
+
+                if not ambiguity.clarification_question:
+                    return {
+                        "status": "error",
+                        "message": "Question was detected as ambiguous but no clarification was provided."
+                    }
+
+                save_conversation(
+                    request.conversation_id,
+                    request.question,
+                    ambiguity.clarification_question
+                )
+
+                return {
+                    "status": "clarification_needed",
+                    "clarification_question": ambiguity.clarification_question
+                }
+
+            # Step 2: Question is clear → generate SQL
             response = generate_sql(request.question)
 
             if response.status == "clarification_needed":

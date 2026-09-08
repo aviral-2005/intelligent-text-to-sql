@@ -7,6 +7,8 @@ class SQLResponse(BaseModel):
     sql: str | None = None
     clarification_question: str | None = None
 
+class BaselineSQLResponse(BaseModel):
+    sql: str
 
 class QueryRequest(BaseModel):
     conversation_id: str
@@ -27,3 +29,7 @@ class QueryRequest(BaseModel):
             )
 
         return self
+
+class AmbiguityResponse(BaseModel):
+    is_ambiguous: bool
+    clarification_question: str | None = None
