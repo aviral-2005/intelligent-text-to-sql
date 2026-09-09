@@ -12,6 +12,7 @@ from backend.conversation import (
     delete_conversation,
 )
 from backend.ambiguity import detect_ambiguity
+from backend.answer_generator import generate_human_readable_answer
 
 app = FastAPI()
 
@@ -109,8 +110,15 @@ def query_database(request: QueryRequest):
 
             result = execute_sql(response.sql)
 
+            answer = generate_human_readable_answer(
+                request.question,
+                response.sql,
+                result
+            )
+
             return {
                 "status": "ready",
+                "answer": answer,
                 "sql": response.sql,
                 "result": result
             }
@@ -166,10 +174,17 @@ def query_database(request: QueryRequest):
 
             result = execute_sql(response.sql)
 
+            answer = generate_human_readable_answer(
+                conversation.original_question,
+                response.sql,
+                result
+            )
+
             delete_conversation(request.conversation_id)
 
             return {
                 "status": "ready",
+                "answer": answer,
                 "sql": response.sql,
                 "result": result
             }
