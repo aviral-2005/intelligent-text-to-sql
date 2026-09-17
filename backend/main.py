@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from backend.database import test_connection
 from backend.llm import generate_sql, generate_sql_from_clarification
 from backend.schema import get_database_schema
@@ -16,6 +17,16 @@ from backend.answer_generator import generate_human_readable_answer
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://frontend-jf717vvl-acme-a092.vercel.app",
+    ],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():
