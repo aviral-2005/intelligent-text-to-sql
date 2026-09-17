@@ -1,0 +1,164 @@
+/*
+ * QueryLens Design Tokens
+ *
+ * A restrained, warm palette built for a data-analysis product.
+ * No gratuitous gradients or glowing effects.
+ */
+
+:root {
+  /* ── Color: Neutrals (warm stone) ──────────────────────── */
+  --color-bg:           #faf9f7;
+  --color-bg-elevated:  #ffffff;
+  --color-bg-subtle:    #f3f1ee;
+  --color-bg-inset:     #eae7e2;
+
+  --color-surface:      #ffffff;
+  --color-surface-hover:#f7f6f3;
+
+  --color-border:       #e0dcd6;
+  --color-border-light: #ece9e3;
+  --color-border-strong:#cec8bf;
+
+  /* ── Color: Text ───────────────────────────────────────── */
+  --color-text:         #1a1815;
+  --color-text-secondary:#6b6560;
+  --color-text-tertiary:#9c958d;
+  --color-text-inverse: #faf9f7;
+
+  /* ── Color: Accent (warm amber) ────────────────────────── */
+  --color-accent:       #c07a28;
+  --color-accent-hover: #a86820;
+  --color-accent-subtle:#fdf5ea;
+  --color-accent-text:  #8a5a1c;
+
+  /* ── Color: Semantic ───────────────────────────────────── */
+  --color-info:         #3578b2;
+  --color-info-bg:      #eef5fb;
+  --color-info-border:  #bbd4ec;
+
+  --color-error:        #c4493c;
+  --color-error-bg:     #fdf0ee;
+  --color-error-border: #edcac5;
+
+  --color-success:      #3a854d;
+  --color-success-bg:   #eef7f0;
+
+  /* ── Color: Sidebar ────────────────────────────────────── */
+  --color-sidebar-bg:   #1e1c19;
+  --color-sidebar-hover:#2a2722;
+  --color-sidebar-text: #c8c3ba;
+  --color-sidebar-text-secondary: #807a72;
+  --color-sidebar-border:#332f29;
+  --color-sidebar-active:#352f25;
+
+  /* ── Color: Code ───────────────────────────────────────── */
+  --color-code-bg:      #1e1c19;
+  --color-code-text:    #d4cfca;
+
+  /* ── Typography ────────────────────────────────────────── */
+  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+
+  --text-xs:      0.75rem;    /* 12px */
+  --text-sm:      0.8125rem;  /* 13px */
+  --text-base:    0.875rem;   /* 14px */
+  --text-md:      0.9375rem;  /* 15px */
+  --text-lg:      1.0625rem;  /* 17px */
+  --text-xl:      1.25rem;    /* 20px */
+  --text-2xl:     1.5rem;     /* 24px */
+  --text-3xl:     1.875rem;   /* 30px */
+
+  --leading-tight:   1.3;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+
+  --weight-normal:  400;
+  --weight-medium:  500;
+  --weight-semi:    600;
+  --weight-bold:    700;
+
+  /* ── Spacing ───────────────────────────────────────────── */
+  --space-1:  0.25rem;   /* 4px */
+  --space-2:  0.5rem;    /* 8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+
+  /* ── Radii ─────────────────────────────────────────────── */
+  --radius-sm:  4px;
+  --radius-md:  6px;
+  --radius-lg:  8px;
+  --radius-xl:  12px;
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --shadow-sm:  0 1px 2px rgba(26, 24, 21, 0.05);
+  --shadow-md:  0 2px 8px rgba(26, 24, 21, 0.08);
+  --shadow-lg:  0 4px 16px rgba(26, 24, 21, 0.1);
+
+  /* ── Transitions ───────────────────────────────────────── */
+  --duration-fast:  120ms;
+  --duration-base:  200ms;
+  --duration-slow:  300ms;
+  --ease:           cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --sidebar-width:  260px;
+  --sidebar-collapsed-width: 60px;
+  --header-height:  52px;
+}
+
+[data-theme="dark"] {
+  /* ── Color: Neutrals (dark slate/charcoal) ─────────────── */
+  --color-bg:           #141311;
+  --color-bg-elevated:  #1e1c19;
+  --color-bg-subtle:    #1a1815;
+  --color-bg-inset:     #0f0e0d;
+
+  --color-surface:      #1e1c19;
+  --color-surface-hover:#2a2722;
+
+  --color-border:       #332f29;
+  --color-border-light: #2a2722;
+  --color-border-strong:#454038;
+
+  /* ── Color: Text ───────────────────────────────────────── */
+  --color-text:         #ece9e3;
+  --color-text-secondary:#9c958d;
+  --color-text-tertiary:#6b6560;
+  --color-text-inverse: #1a1815;
+
+  /* ── Color: Accent (warm amber - adjusted for dark) ────── */
+  --color-accent:       #d48a35;
+  --color-accent-hover: #e59e45;
+  --color-accent-subtle:#2a2216;
+  --color-accent-text:  #f0b875;
+
+  /* ── Color: Semantic ───────────────────────────────────── */
+  --color-info:         #5a9ed8;
+  --color-info-bg:      #162330;
+  --color-info-border:  #1f364d;
+
+  --color-error:        #e56a5c;
+  --color-error-bg:     #3d1a16;
+  --color-error-border: #5c2721;
+
+  --color-success:      #4ca562;
+  --color-success-bg:   #152e1c;
+
+  /* ── Color: Sidebar ────────────────────────────────────── */
+  --color-sidebar-bg:   #0f0e0d;
+  --color-sidebar-hover:#1a1815;
+  --color-sidebar-text: #c8c3ba;
+  --color-sidebar-text-secondary: #807a72;
+  --color-sidebar-border:#2a2722;
+  --color-sidebar-active:#25221d;
+
+  /* ── Color: Code ───────────────────────────────────────── */
+  --color-code-bg:      #0f0e0d;
+  --color-code-text:    #d4cfca;
+}

@@ -1,0 +1,92 @@
+.sql-block {
+  margin-top: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+}
+
+.sql-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--duration-fast) var(--ease);
+}
+
+.sql-block__header:hover {
+  background: var(--color-border-light);
+}
+
+.sql-block__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semi);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sql-block__toggle-icon {
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.sql-block__toggle-icon--open {
+  transform: rotate(180deg);
+}
+
+.sql-block__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.sql-block__copy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px 8px;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.sql-block__copy:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+}
+
+.sql-block__content {
+  padding: 0;
+  margin: 0;
+  background: var(--color-code-bg);
+}
+
+.sql-block__pre {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+
+.sql-block__code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-code-text);
+}
+
+/* highlight.js theme overrides for dark code block */
+.hljs-keyword { color: #cc7832; font-weight: bold; }
+.hljs-string { color: #6a8759; }
+.hljs-number { color: #6897bb; }
+.hljs-built_in { color: #ffc66d; }
+.hljs-literal { color: #cc7832; }
+.hljs-type { color: #a9b7c6; }
+.hljs-comment { color: #808080; font-style: italic; }
