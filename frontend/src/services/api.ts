@@ -7,7 +7,7 @@ import type { QueryRequest, QueryResponse } from '../types/api';
  * UI components never call fetch() directly.
  */
 
-const BASE = '/api';
+const BASE = 'https://querylens-api-xl5o.onrender.com';
 
 class ApiError extends Error {
   constructor(
