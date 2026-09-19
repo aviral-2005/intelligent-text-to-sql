@@ -20,8 +20,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
-        "https://frontend-jf717vvl-acme-a092.vercel.app",
+        "*"
     ],
     allow_credentials=False,
     allow_methods=["*"],
